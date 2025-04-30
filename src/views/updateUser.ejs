@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editar Usuário</title>
+</head>
+<body>
+  <h1>Editar <%= user.nome %></h1>
+  <form action="/updateUser/<%= user.id %>" method="POST">
+    <label>Nome:</label>
+    <input type="text" name="nome" value="<%= user.nome %>" required><br>
+    <button type="submit">Salvar</button>
+  </form>
+
+  <h3>Emails</h3>
+  <!-- Renderização de campos para adicionar/remover emails (pode ser com JS) -->
+
+  <h3>Telefones</h3>
+  <!-- Renderização de campos para adicionar/remover telefones (pode ser com JS) -->
+
+  <a href="/users">Voltar</a>
+</body>
+</html>
