@@ -1,8 +1,8 @@
 {
   "name": "simple-todo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Este projeto é uma aplicação web desenvolvida com **Node.js**, **Express**, **SQLite** e **EJS**, estruturada no padrão **MVC**, que permite a **gestão de usuários com autenticação, controle de sessão e permissões por perfil**.",
+  "main": "server.js",
   "scripts": {
     "dev": "node --watch src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"

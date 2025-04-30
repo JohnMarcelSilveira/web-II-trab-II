@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/authController");
-const userController = require("../controllers/userController");
+const authController = require("../controllers/auth.controller");
+//const userController = require("../controllers/userController");
 const {
   verificarLogin,
   verificarAdmin,
@@ -18,6 +18,7 @@ router.get("/home", verificarLogin, (req, res) => {
 });
 
 // Usuários
+/*
 router.get("/addUser", userController.renderAddForm);
 router.post("/addUser", userController.create);
 // ... outras rotas de CRUD
@@ -39,5 +40,6 @@ router.post("/searchUser/:id/view", userController.searchUserIdViewPost);
 router.get("/searchUser/:id/confirm", userController.searchUserIdConfirm);
 router.post("/searchUser/:id/confirm", userController.searchUserIdConfirmPost);
 router.get("/searchUser/:id/confirm/edit", userController.searchUserIdConfirmEdit);
+*/
 
 module.exports = router;

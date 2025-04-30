@@ -1,7 +1,9 @@
 const express = require("express");
 const session = require("express-session");
 const app = express();
-const routes = require("./src/routes");
+const routes = require("./routes/index.routes");
+const db = require("./config/dbConnection");
+const path = require("path");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
