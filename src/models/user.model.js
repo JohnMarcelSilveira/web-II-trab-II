@@ -1,4 +1,4 @@
-const db = require("../config/dbConnection");
+const db = require("../config/db");
 
 module.exports = {
   findByCPF: (cpf, callback) => {
