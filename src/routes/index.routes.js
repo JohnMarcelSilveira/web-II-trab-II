@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth.controller");
-//const userController = require("../controllers/userController");
+const userController = require("../controllers/user.controller");
 const {
   verificarLogin,
   verificarAdmin,
@@ -16,6 +16,12 @@ router.get("/logout", authController.logout);
 router.get("/home", verificarLogin, (req, res) => {
   res.render("home", { usuario: req.session.usuario });
 });
+
+// Cadastro de usuário
+router.get("/addUser", (req, res) => {
+  res.render("addUser", { erro: null });
+});
+router.post("/addUser", userController.addUser);
 
 // Usuários
 /*
