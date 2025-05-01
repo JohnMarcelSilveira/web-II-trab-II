@@ -4,10 +4,11 @@ const { hashSync } = require("bcrypt");
 
 
 const usersDao = {
-  findByCPF: (cpf, callback) => {
-    db.get("SELECT * FROM usuarios WHERE cpf = ?", [cpf], callback);
+  findByCPF(cpf, callback) {
+    db.prepare("SELECT * FROM usuarios WHERE cpf = ?").get(cpf, callback);
   },
-  createUser(user){
+
+  createUser(user) {
     const insertUser = `INSERT INTO usuarios (nome, cpf, senha, perfil) VALUES (?, ?, ?, ?)`;
     db.prepare(insertUser).run(
       user.nome,
@@ -16,53 +17,34 @@ const usersDao = {
       user.perfil
     );
   },
-  // Adicione mais métodos: listAll, findById, update, delete...
-  listAll: (callback) => {
-    db.all("SELECT * FROM usuarios", [], callback);
+
+  listAll(callback) {
+    db.prepare("SELECT * FROM usuarios").all(callback);
   },
-  findById: (id, callback) => {
-    db.get("SELECT * FROM usuarios WHERE id = ?", [id], callback);
+
+  findById(id, callback) {
+    db.prepare("SELECT * FROM usuarios WHERE id = ?").get(id, callback);
   },
-  update: (id, nome, cpf, senha, perfil, callback) => {
-    db.run(
-      "UPDATE usuarios SET nome = ?, cpf = ?, senha = ?, perfil = ? WHERE id = ?",
-      [nome, cpf, senha, perfil, id],
+
+  update(user, callback) {
+    const updateSQL = `
+      UPDATE usuarios 
+      SET nome = ?, cpf = ?, senha = ?, perfil = ?
+      WHERE id = ?
+    `;
+    db.prepare(updateSQL).run(
+      user.nome,
+      user.cpf,
+      hashSync(user.senha, 10),
+      user.perfil,
+      user.id,
       callback
     );
   },
-  delete: (id, callback) => {
-    db.run("DELETE FROM usuarios WHERE id = ?", [id], callback);
+
+  delete(id, callback) {
+    db.prepare("DELETE FROM usuarios WHERE id = ?").run(id, callback);
   },
 };
 
 module.exports = usersDao;
-
-// module.exports = {
-//   findByCPF: (cpf, callback) => {
-//     db.get("SELECT * FROM usuarios WHERE cpf = ?", [cpf], callback);
-//   },
-//   createUser: (nome, cpf, senha, perfil, callback) => {
-//     db.run(
-//       "INSERT INTO usuarios (nome, cpf, senha, perfil) VALUES (?, ?, ?, ?)",
-//       [nome, cpf, senha, perfil],
-//       callback
-//     );
-//   },
-//   // Adicione mais métodos: listAll, findById, update, delete...
-//     listAll: (callback) => {
-//         db.all("SELECT * FROM usuarios", [], callback);
-//     },
-//     findById: (id, callback) => {
-//         db.get("SELECT * FROM usuarios WHERE id = ?", [id], callback);
-//     },
-//     update: (id, nome, cpf, senha, perfil, callback) => {
-//         db.run(
-//             "UPDATE usuarios SET nome = ?, cpf = ?, senha = ?, perfil = ? WHERE id = ?",
-//             [nome, cpf, senha, perfil, id],
-//             callback
-//         );
-//     },
-//     delete: (id, callback) => {
-//         db.run("DELETE FROM usuarios WHERE id = ?", [id], callback);
-//     },
-// };
