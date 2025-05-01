@@ -21,7 +21,7 @@ router.get("/home", verificarLogin, (req, res) => {
 router.get("/addUser", (req, res) => {
   res.render("addUser", { erro: null });
 });
-router.post("/addUser", userController.addUser);
+router.post("/addUser", userController.create);
 
 // Usuários
 /*
