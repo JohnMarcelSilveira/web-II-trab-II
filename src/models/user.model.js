@@ -7,16 +7,27 @@ const usersDao = {
     db.prepare("SELECT * FROM usuarios WHERE cpf = ?").get(cpf, callback);
   },
 
-  createUser(user) {
-    const insertUser = `INSERT INTO usuarios (nome, cpf, senha, perfil) VALUES (?, ?, ?, ?)`;
-    db.prepare(insertUser).run(
-      user.nome,
-      user.cpf,
-      hashSync(user.senha, 10),
-      user.perfil
-    );
-  },
+  createUser(user, callback) {
+    try {
+      const insertUser = `INSERT INTO usuarios (nome, cpf, senha, perfil) VALUES (?, ?, ?, ?)`;
+      const stmt = db.prepare(insertUser);
 
+      stmt.run(user.nome, user.cpf, hashSync(user.senha, 10), user.perfil);
+
+      // Usando stmt.get() para pegar o id depois da inserção
+      db.prepare("SELECT last_insert_rowid()").get((err, row) => {
+        if (err) {
+          callback(err);
+        } else {
+          console.log("ID do usuário inserido:", row["last_insert_rowid()"]);
+          callback(null, row["last_insert_rowid()"]);
+        }
+      });
+    } catch (err) {
+      console.error("Erro no createUser:", err);
+      callback(err);
+    }
+  },
   listAllFiltrado(filtro, limite, offset, callback) {
     const filtroLike = `%${filtro}%`;
 
@@ -85,6 +96,16 @@ const usersDao = {
 
   delete(id, callback) {
     db.prepare("DELETE FROM usuarios WHERE id = ?").run(id, callback);
+  },
+
+  createEmail(userId, email, principal) {
+    const insertEmail = `INSERT INTO emails (usuario_id, email, principal) VALUES (?, ?, ?)`;
+    db.prepare(insertEmail).run(userId, email, principal ? 1 : 0);
+  },
+
+  createTelefone(userId, telefone, principal) {
+    const insertTelefone = `INSERT INTO telefones (usuario_id, telefone, principal) VALUES (?, ?, ?)`;
+    db.prepare(insertTelefone).run(userId, telefone, principal ? 1 : 0);
   },
 };
 
