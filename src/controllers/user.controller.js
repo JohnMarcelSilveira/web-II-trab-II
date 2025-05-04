@@ -3,19 +3,40 @@ const usersDAO = require("../models/user.model");
 
 const usersController = {
   getAll: (req, res) => {
-    usersDAO.listAll((err, rows) => {
-      if (err)
-        return res.status(500).json({ erro: "Erro ao listar usuários." });
-      res.json(rows);
+    const pagina = parseInt(req.query.pagina) || 1;
+    const filtro = req.query.nome || "";
+    const limite = 5;
+    const offset = (pagina - 1) * limite;
+
+    usersDAO.listAllFiltrado(filtro, limite, offset, (err, users, total) => {
+      if (err) {
+        return res.status(500).send("Erro ao listar usuários.");
+      }
+
+      const temMais = total > pagina * limite;
+
+      res.render("users", {
+        users,
+        pagina,
+        temMais,
+        filtro,
+        session: req.session || {},
+      });
     });
   },
 
   getById: (req, res) => {
     const { id } = req.params;
-    usersDAO.findById(id, (err, row) => {
-      if (err || !row)
+    usersDAO.findById(id, (err, usuario) => {
+      if (err || !usuario)
         return res.status(404).json({ erro: "Usuário não encontrado." });
-      res.json(row);
+
+      res.render("userDetails", {
+        user: usuario,
+        emails: usuario.emails || [],
+        telefones: usuario.telefones || [],
+        session: req.session || {},
+      });
     });
   },
 
@@ -57,34 +78,3 @@ const usersController = {
 };
 
 module.exports = usersController;
-
-// exports.addUser = async (req, res) => {
-//   const { nome, cpf, senha } = req.body;
-
-//   if (!nome || !cpf || !senha) {
-//     return res.send('Preencha todos os campos.');
-//   }
-
-//   // Verifica se CPF já existe
-//   db.get('SELECT * FROM usuarios WHERE cpf = ?', [cpf], async (err, row) => {
-//     if (err) return res.send('Erro ao verificar CPF.');
-//     if (row) return res.send('Erro: CPF já cadastrado.');
-
-//     // Verifica se é o primeiro usuário
-//     db.get('SELECT COUNT(*) as total FROM usuarios', async (err, result) => {
-//       if (err) return res.send('Erro ao contar usuários.');
-
-//       const perfil = result.total === 0 ? 'ADMIN' : 'CLIENTE';
-//       const senhaCriptografada = await bcrypt.hash(senha, 10);
-
-//       db.run(
-//         'INSERT INTO usuarios (nome, cpf, senha, perfil) VALUES (?, ?, ?, ?)',
-//         [nome, cpf, senhaCriptografada, perfil],
-//         function (err) {
-//           if (err) return res.send('Erro ao cadastrar usuário.');
-//           res.redirect('/login');
-//         }
-//       );
-//     });
-//   });
-// };

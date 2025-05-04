@@ -22,17 +22,17 @@ router.get("/addUser", (req, res) => {
   res.render("addUser", { erro: null });
 });
 router.post("/addUser", userController.create);
+router.get("/users", verificarLogin, userController.getAll);
+router.get("/viewUser/:id", userController.getById);
 
 // Usuários
 /*
 router.get("/addUser", userController.renderAddForm);
 router.post("/addUser", userController.create);
 // ... outras rotas de CRUD
-router.get("/listUsers", verificarLogin, userController.listAll);
 router.get("/editUser/:id", userController.renderEditForm);
 router.post("/editUser/:id", userController.update);
 router.get("/deleteUser/:id", userController.deleteUser);
-router.get("/viewUser/:id", userController.viewUser);
 router.get("/searchUser", userController.searchUser);
 router.post("/searchUser", userController.searchUserPost);
 router.get("/searchUser/:id", userController.searchUserId);

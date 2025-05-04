@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Lista de Usuários</title>
-</head>
-<body>
-  <h1>Usuários</h1>
-  <form method="GET" action="/users">
-    <input type="text" name="nome" placeholder="Filtrar por nome" value="<%= filtro || '' %>">
-    <button type="submit">Filtrar</button>
-  </form>
+  <head>
+    <title>Lista de Usuários</title>
+  </head>
+  <body>
+    <h1>Usuários</h1>
+    <form method="GET" action="/users">
+      <input
+        type="text"
+        name="nome"
+        placeholder="Filtrar por nome"
+        value="<%= filtro || '' %>"
+      />
+      <button type="submit">Filtrar</button>
+    </form>
 
-  <ul>
-    <% users.forEach(user => { %>
+    <ul>
+      <% users.forEach(user => { %>
       <li>
-        <a href="/user/<%= user.id %>"><%= user.nome %></a>
-        <% if (session.user.perfil === 'ADMIN' || session.user.id === user.id) { %>
-          | <a href="/updateUser/<%= user.id %>">Editar</a>
-        <% } %>
-        <% if (session.user.perfil === 'ADMIN' && user.perfil !== 'ADMIN') { %>
-          | <a href="/deleteUser/<%= user.id %>">Excluir</a>
+        <a href="/viewUser/<%= user.id %>"><%= user.nome %></a>
+        <% if (session && session.user && (session.user.perfil === 'ADMIN' ||
+        session.user.id === user.id)) { %> |
+        <a href="/updateUser/<%= user.id %>">Editar</a> <% } %> <% if (session
+        && session.user && session.user.perfil === 'ADMIN' && user.perfil !==
+        'ADMIN') { %> | <a href="/deleteUser/<%= user.id %>">Excluir</a>
         <% } %>
       </li>
-    <% }) %>
-  </ul>
+      <% }) %>
+    </ul>
 
-  <div>
-    <% if (pagina > 1) { %>
-      <a href="/users?pagina=<%= pagina - 1 %>&nome=<%= filtro || '' %>">Anterior</a>
-    <% } %>
-    Página <%= pagina %>
-    <% if (temMais) { %>
-      <a href="/users?pagina=<%= pagina + 1 %>&nome=<%= filtro || '' %>">Próxima</a>
-    <% } %>
-  </div>
+    <div>
+      <% if (pagina > 1) { %>
+      <a href="/users?pagina=<%= pagina - 1 %>&nome=<%= filtro || '' %>"
+        >Anterior</a
+      >
+      <% } %> Página <%= pagina %> <% if (temMais) { %>
+      <a href="/users?pagina=<%= pagina + 1 %>&nome=<%= filtro || '' %>"
+        >Próxima</a
+      >
+      <% } %>
+    </div>
 
-  <a href="/home">Voltar</a>
-</body>
+    <a href="/home">Voltar</a>
+  </body>
 </html>
