@@ -8,7 +8,7 @@ const {
 } = require("../middlewares/authMiddleware");
 
 // Autenticação
-router.get("/login", (req, res) => res.render("login", { erro: null }));
+router.get("/login", (req, res) => res.render("login", { titulo: "Login", erro: null }));
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);
 

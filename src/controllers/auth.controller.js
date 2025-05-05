@@ -10,14 +10,14 @@ const authController = {
     userModel.findByCPF(cpf, async (err, usuario) => {
       if (err || !usuario) {
         // Se não encontrar o usuário, retorna a página de login com erro
-        return res.render("login", { erro: "Usuário não encontrado." });
+        return res.render("login", { erro: "Usuário não encontrado.", titulo: "Login" });
       }
 
       // Compara a senha fornecida com a senha criptografada armazenada no banco
       const match = await bcrypt.compare(senha, usuario.senha);
       if (!match) {
         // Se a senha não coincidir, retorna a página de login com erro
-        return res.render("login", { erro: "Senha incorreta." });
+        return res.render("login", { erro: "Senha incorreta.", titulo: "Login" });
       }
 
       // Se as credenciais estiverem corretas, cria a sessão do usuário
