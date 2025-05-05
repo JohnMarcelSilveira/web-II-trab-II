@@ -1,22 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Editar Usuário</title>
-</head>
-<body>
-  <h1>Editar <%= user.nome %></h1>
-  <form action="/updateUser/<%= user.id %>" method="POST">
-    <label>Nome:</label>
-    <input type="text" name="nome" value="<%= user.nome %>" required><br>
-    <button type="submit">Salvar</button>
-  </form>
+<h1>Editar Usuário</h1>
+
+<form action="/updateUser/<%= user.id %>" method="POST">
+  <label>Nome:</label>
+  <input type="text" name="nome" value="<%= user.nome %>" required />
+
+  <label>CPF:</label>
+  <input type="text" name="cpf" value="<%= user.cpf %>" readonly />
+
+  <label>Perfil:</label>
+  <input type="text" name="perfil" value="<%= user.perfil %>" readonly />
+
+  <label>Senha (deixe em branco para não alterar):</label>
+  <input type="password" name="senha" />
 
   <h3>Emails</h3>
-  <!-- Renderização de campos para adicionar/remover emails (pode ser com JS) -->
+  <div id="emailsContainer">
+    <% emails.forEach((email, index) => { %>
+      <div>
+        <input type="email" name="emails[<%= index %>].email" value="<%= email.email %>" required />
+        <label>
+          Principal:
+          <input type="radio" name="emailPrincipal" value="<%= index %>" <%= email.principal ? "checked" : "" %> />
+        </label>
+        <button type="button" onclick="removeEmail(this)">Remover</button>
+      </div>
+    <% }) %>
+  </div>
+  <button type="button" onclick="addEmail()">+ Email</button>
 
   <h3>Telefones</h3>
-  <!-- Renderização de campos para adicionar/remover telefones (pode ser com JS) -->
+  <div id="telefonesContainer">
+    <% telefones.forEach((tel, index) => { %>
+      <div>
+        <input type="text" name="telefones[<%= index %>].telefone" value="<%= tel.telefone %>" required />
+        <label>
+          Principal:
+          <input type="radio" name="telefonePrincipal" value="<%= index %>" <%= tel.principal ? "checked" : "" %> />
+        </label>
+        <button type="button" onclick="removeTelefone(this)">Remover</button>
+      </div>
+    <% }) %>
+  </div>
+  <button type="button" onclick="addTelefone()">+ Telefone</button>
 
-  <a href="/users">Voltar</a>
-</body>
-</html>
+  <br />
+  <button type="submit">Salvar Alterações</button>
+</form>
+
+<script src="/js/form-dinamico.js"></script>
+

@@ -19,12 +19,16 @@
     <ul>
       <% telefones.forEach(telefone => { %>
       <li>
-        <%= telefone.telefone %> <% if (telefone.principal) { %>(principal)<% }
-        %>
+        <%= telefone.telefone %> <% if (telefone.principal) { %>(principal)<% } %>
       </li>
       <% }) %>
     </ul>
 
     <a href="/users">Voltar</a>
+
+    <!-- Botão de Editar -->
+    <a href="/updateUser/<%= user.id %>">
+      <button>Editar Usuário</button>
+    </a>
   </body>
 </html>
