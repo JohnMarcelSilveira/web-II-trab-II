@@ -3,6 +3,7 @@ const session = require("express-session");
 const app = express();
 const routes = require("./routes/index.routes");
 const path = require("path");
+const setUsuario = require("./middlewares/setUsuario");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -16,6 +17,8 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+app.use(setUsuario);
 
 app.use("/", routes);
 

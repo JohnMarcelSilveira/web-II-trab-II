@@ -1,34 +1,49 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Detalhes do Usuário</title>
-  </head>
-  <body>
-    <h1>Dados de <%= user.nome %></h1>
-    <p><strong>CPF:</strong> <%= user.cpf %></p>
-    <p><strong>Perfil:</strong> <%= user.perfil %></p>
+<%- include('partials/header', { titulo: 'Detalhes do usuario' }) %>
+
+  <div class="container">
+    <h1>Detalhes de <%= user.nome %>
+    </h1>
+
+    <div class="form-group">
+      <label><strong>CPF:</strong></label>
+      <span>
+        <%= user.cpf %>
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label><strong>Perfil:</strong></label>
+      <span>
+        <%= user.perfil %>
+      </span>
+    </div>
 
     <h3>Emails</h3>
     <ul>
-      <% emails.forEach(email => { %>
-      <li><%= email.email %> <% if (email.principal) { %>(principal)<% } %></li>
-      <% }) %>
+      <% emails.forEach(email=> { %>
+        <li>
+          <%= email.email %>
+            <% if (email.principal) { %><strong> (principal)</strong>
+              <% } %>
+        </li>
+        <% }) %>
     </ul>
 
     <h3>Telefones</h3>
     <ul>
-      <% telefones.forEach(telefone => { %>
-      <li>
-        <%= telefone.telefone %> <% if (telefone.principal) { %>(principal)<% } %>
-      </li>
-      <% }) %>
+      <% telefones.forEach(tel=> { %>
+        <li>
+          <%= tel.telefone %>
+            <% if (tel.principal) { %><strong> (principal)</strong>
+              <% } %>
+        </li>
+        <% }) %>
     </ul>
 
-    <a href="/users">Voltar</a>
+    <div style="margin-top: 20px;">
+      <a href="/users" class="button">Voltar</a>
+      <a href="/updateUser/<%= user.id %>" class="button">Editar Usuário</a>
+    </div>
+  </div>
 
-    <!-- Botão de Editar -->
-    <a href="/updateUser/<%= user.id %>">
-      <button>Editar Usuário</button>
-    </a>
-  </body>
-</html>
+  <%- include('partials/footer') %>

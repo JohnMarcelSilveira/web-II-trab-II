@@ -21,6 +21,7 @@ const usersController = {
         temMais,
         filtro,
         session: req.session || {},
+        usuario: req.session.user || null,
       });
     });
   },
@@ -40,6 +41,7 @@ const usersController = {
         emails: usuario.emails || [],
         telefones: usuario.telefones || [],
         session: req.session || {},
+        usuario: req.session.user || null,
         erro: null,
       });
     });

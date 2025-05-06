@@ -1,4 +1,4 @@
-<%- include('partials/header', { titulo: 'Home' , usuario: session.usuario }) %>
+<%- include('partials/header', { titulo: 'Home' }) %>
 
   <div class="container">
     <h1>Bem-vindo, <%= session.usuario?.nome || "Usuário" %>!</h1>

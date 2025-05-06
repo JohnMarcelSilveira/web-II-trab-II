@@ -1,51 +1,73 @@
-<h1>Editar Usuário</h1>
+<%- include('partials/header', { titulo: 'Editar Usuario' }) %>
 
-<form action="/updateUser/<%= user.id %>" method="POST">
-  <label>Nome:</label>
-  <input type="text" name="nome" value="<%= user.nome %>" required />
+  <div class="container">
+    <h1>Editar Usuário</h1>
 
-  <label>CPF:</label>
-  <input type="text" name="cpf" value="<%= user.cpf %>" readonly />
+    <% if (erro) { %>
+      <p class="erro">
+        <%= erro %>
+      </p>
+      <% } %>
 
-  <label>Perfil:</label>
-  <input type="text" name="perfil" value="<%= user.perfil %>" readonly />
+        <form action="/updateUser/<%= user.id %>" method="POST">
+          <div class="form-group">
+            <label>Nome:</label>
+            <input type="text" name="nome" value="<%= user.nome %>" required />
+          </div>
 
-  <label>Senha (deixe em branco para não alterar):</label>
-  <input type="password" name="senha" />
+          <div class="form-group">
+            <label>CPF:</label>
+            <input type="text" name="cpf" value="<%= user.cpf %>" readonly />
+          </div>
 
-  <h3>Emails</h3>
-  <div id="emailsContainer">
-    <% emails.forEach((email, index) => { %>
-      <div>
-        <input type="email" name="emails[<%= index %>].email" value="<%= email.email %>" required />
-        <label>
-          Principal:
-          <input type="radio" name="emailPrincipal" value="<%= index %>" <%= email.principal ? "checked" : "" %> />
-        </label>
-        <button type="button" onclick="removeEmail(this)">Remover</button>
-      </div>
-    <% }) %>
+          <div class="form-group">
+            <label>Perfil:</label>
+            <input type="text" name="perfil" value="<%= user.perfil %>" readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Senha (deixe em branco para não alterar):</label>
+            <input type="password" name="senha" />
+          </div>
+
+          <h3>Emails</h3>
+          <div id="emailsContainer">
+            <% emails.forEach((email, index)=> { %>
+              <div class="form-inline">
+                <input type="email" name="emails[<%= index %>].email" value="<%= email.email %>" required />
+                <label>
+                  Principal:
+                  <input type="radio" name="emailPrincipal" value="<%= index %>" <%=email.principal ? "checked" : "" %>
+                  />
+                </label>
+                <button type="button" onclick="removeEmail(this)">Remover</button>
+              </div>
+              <% }) %>
+          </div>
+          <button type="button" onclick="addEmail()">+ Adicionar Email</button>
+
+          <h3>Telefones</h3>
+          <div id="telefonesContainer">
+            <% telefones.forEach((tel, index)=> { %>
+              <div class="form-inline">
+                <input type="text" name="telefones[<%= index %>].telefone" value="<%= tel.telefone %>" required />
+                <label>
+                  Principal:
+                  <input type="radio" name="telefonePrincipal" value="<%= index %>" <%=tel.principal ? "checked" : "" %>
+                  />
+                </label>
+                <button type="button" onclick="removeTelefone(this)">Remover</button>
+              </div>
+              <% }) %>
+          </div>
+          <button type="button" onclick="addTelefone()">+ Adicionar Telefone</button>
+
+          <br /><br />
+          <button type="submit">Salvar Alterações</button>
+          <a href="/users" class="btn-voltar">Voltar</a>
+        </form>
   </div>
-  <button type="button" onclick="addEmail()">+ Email</button>
 
-  <h3>Telefones</h3>
-  <div id="telefonesContainer">
-    <% telefones.forEach((tel, index) => { %>
-      <div>
-        <input type="text" name="telefones[<%= index %>].telefone" value="<%= tel.telefone %>" required />
-        <label>
-          Principal:
-          <input type="radio" name="telefonePrincipal" value="<%= index %>" <%= tel.principal ? "checked" : "" %> />
-        </label>
-        <button type="button" onclick="removeTelefone(this)">Remover</button>
-      </div>
-    <% }) %>
-  </div>
-  <button type="button" onclick="addTelefone()">+ Telefone</button>
+  <script src="/js/form-dinamico.js"></script>
 
-  <br />
-  <button type="submit">Salvar Alterações</button>
-</form>
-
-<script src="/js/form-dinamico.js"></script>
-
+  <%- include("partials/footer") %>
