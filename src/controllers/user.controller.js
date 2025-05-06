@@ -59,19 +59,23 @@ const usersController = {
   create: (req, res) => {
     const { nome, cpf, senha, perfil } = req.body;
 
-    const emails = Array.isArray(req.body.emails)
-      ? req.body.emails.map((email) => ({
-          email: email.email || email,
-          principal: email.principal || "0", // Mantém o principal que veio no objeto
-        }))
-      : [];
+    // Pegamos os índices dos principais
+    const emailPrincipalIndex = req.body.emailPrincipal;
+    const telefonePrincipalIndex = req.body.telefonePrincipal;
 
-    const telefones = Array.isArray(req.body.telefones)
-      ? req.body.telefones.map((telefone) => ({
-          telefone: telefone.telefone || telefone,
-          principal: telefone.principal || "0" // Mantém o principal que veio no objeto
-        }))
-      : [];
+    const emails = Array.isArray(req.body.emails)
+    ? req.body.emails.map((email, index) => ({
+        email: email.email,
+        principal: index.toString() === emailPrincipalIndex ? "1" : "0",
+      }))
+    : [];
+
+  const telefones = Array.isArray(req.body.telefones)
+    ? req.body.telefones.map((telefone, index) => ({
+        telefone: telefone.telefone,
+        principal: index.toString() === telefonePrincipalIndex ? "1" : "0",
+      }))
+    : [];
 
     // Validação
     const emailPrincipal = emails.find((email) => email.principal === "1");
@@ -127,7 +131,8 @@ const usersController = {
               );
             });
 
-            res.send("Usuário criado com sucesso!");
+            req.session.mensagem = "Usuário cadastrado com sucesso!";
+            res.redirect("/home");
           }
         );
       });
