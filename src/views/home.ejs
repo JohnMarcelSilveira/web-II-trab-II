@@ -1,6 +1,21 @@
 <%- include('partials/header', { titulo: 'Home' }) %>
 
   <div class="container">
+
+    <% if (session.mensagem) { %>
+      <div class="alert alert-success">
+        <%= session.mensagem %>
+      </div>
+
+      <script>
+        setTimeout(() => {
+          window.location.href = "/home"; 
+        }, 3000);
+      </script>
+
+      <% session.mensagem=null; %>
+    <% } %>
+
     <h1>Bem-vindo, <%= session.user?.nome || "Usuário" %>!</h1>
 
     <div class="card mt-4">
