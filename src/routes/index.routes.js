@@ -13,6 +13,9 @@ router.post("/login", authController.login);
 router.get("/logout", authController.logout);
 
 // Página inicial
+router.get("/", verificarLogin, (req, res) => {
+  res.redirect("/home");
+});
 router.get("/home", verificarLogin, (req, res) => {
   res.render("home", { 
     usuario: req.session.usuario,
