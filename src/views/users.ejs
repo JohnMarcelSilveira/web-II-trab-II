@@ -3,38 +3,60 @@
   <div class="container">
     <h1>Usuários</h1>
 
-    <form method="GET" action="/users">
-      <input type="text" name="nome" placeholder="Filtrar por nome" value="<%= filtro || '' %>" />
-      <button type="submit">Filtrar</button>
+    <form method="GET" action="/users" class="filter-form">
+      <input type="text" name="nome" placeholder="Filtrar por nome" value="<%= filtro || '' %>">
+      <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
 
-    <ul>
-      <% users.forEach(user=> { %>
-        <li>
-          <a href="/viewUser/<%= user.id %>">
-            <%= user.nome %>
-          </a>
-          <% if (session && session.user && (session.user.perfil==='ADMIN' || session.user.id===user.id)) { %>
-            | <a href="/updateUser/<%= user.id %>">Editar</a>
-            <% } %>
-              <% if (session && session.user && session.user.perfil==='ADMIN' && user.perfil !=='ADMIN' ) { %>
-                | <a href="/deleteUser/<%= user.id %>">Excluir</a>
-                <% } %>
-        </li>
-        <% }) %>
-    </ul>
-
-    <div class="paginacao">
-      <% if (pagina> 1) { %>
-        <a href="/users?pagina=<%= pagina - 1 %>&nome=<%= filtro || '' %>">Anterior</a>
-        <% } %>
-          Página <%= pagina %>
-            <% if (temMais) { %>
-              <a href="/users?pagina=<%= pagina + 1 %>&nome=<%= filtro || '' %>">Próxima</a>
-              <% } %>
+    <div class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Perfil</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user=> { %>
+            <tr>
+              <td>
+                <%= user.nome %>
+              </td>
+              <td>
+                <%= user.cpf %>
+              </td>
+              <td>
+                <%= user.perfil %>
+              </td>
+              <td class="actions">
+                <a href="/updateUser/<%= user.id %>" class="btn btn-edit">Editar</a>
+                <% if (session && session.user && session.user.perfil==='ADMIN' && user.perfil !=='ADMIN' ) { %>
+                  <a href="/deleteUser/<%= user.id %>" class="btn btn-delete">Excluir</a>
+                  <% } %>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
     </div>
 
-    <a href="/home">Voltar</a>
+    <div class="pagination">
+      <span class="page-info">Página <%= pagina %></span>
+      <div class="pagination-buttons">
+        <% if (pagina> 1) { %>
+          <a href="/users?pagina=<%= pagina - 1 %>&nome=<%= filtro || '' %>" class="btn btn-pagination">Anterior</a>
+          <% } %>
+            <% if (temMais) { %>
+              <a href="/users?pagina=<%= pagina + 1 %>&nome=<%= filtro || '' %>" class="btn btn-pagination">Próxima</a>
+              <% } %>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <a href="/home" class="btn btn-back">Voltar para Home</a>
+    </div>
   </div>
 
   <%- include('partials/footer') %>

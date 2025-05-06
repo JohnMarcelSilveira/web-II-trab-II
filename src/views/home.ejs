@@ -1,12 +1,14 @@
 <%- include('partials/header', { titulo: 'Home' }) %>
 
   <div class="container">
-    <h1>Bem-vindo, <%= session.usuario?.nome || "Usuário" %>!</h1>
+    <h1>Bem-vindo, <%= session.user?.nome || "Usuário" %>!</h1>
 
-    <div class="links">
-      <a href="/users">Ver usuários</a>
-      <a href="/addUser">Cadastrar novo usuário</a>
-      <a href="/logout">Sair</a>
+    <div class="card mt-4">
+      <div class="links">
+        <a href="/users" class="btn btn-primary">Ver usuários</a>
+        <a href="/addUser" class="btn btn-success">Cadastrar novo usuário</a>
+        <a href="/logout" class="btn btn-secondary">Sair</a>
+      </div>
     </div>
   </div>
 

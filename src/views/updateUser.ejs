@@ -1,73 +1,85 @@
-<%- include('partials/header', { titulo: 'Editar Usuario' }) %>
+<%- include('partials/header', { titulo: 'Editar Usuário' }) %>
 
   <div class="container">
-    <h1>Editar Usuário</h1>
+    <div class="card">
+      <h1>Editar Usuário</h1>
 
-    <% if (erro) { %>
-      <p class="erro">
-        <%= erro %>
-      </p>
-      <% } %>
+      <% if (erro) { %>
+        <div class="alert alert-danger">
+          <%= erro %>
+        </div>
+        <% } %>
 
-        <form action="/updateUser/<%= user.id %>" method="POST">
-          <div class="form-group">
-            <label>Nome:</label>
-            <input type="text" name="nome" value="<%= user.nome %>" required />
-          </div>
+          <form method="POST" action="/updateUser/<%= user.id %>">
+            <div class="form-group">
+              <label>Nome:</label>
+              <input type="text" class="form-control" name="nome" value="<%= user.nome %>" required>
+            </div>
 
-          <div class="form-group">
-            <label>CPF:</label>
-            <input type="text" name="cpf" value="<%= user.cpf %>" readonly />
-          </div>
+            <div class="form-group">
+              <label>CPF:</label>
+              <input type="text" class="form-control" name="cpf" value="<%= user.cpf %>" readonly>
+            </div>
 
-          <div class="form-group">
-            <label>Perfil:</label>
-            <input type="text" name="perfil" value="<%= user.perfil %>" readonly />
-          </div>
+            <div class="form-group">
+              <label>Perfil:</label>
+              <input type="text" class="form-control" name="perfil" value="<%= user.perfil %>" readonly>
+            </div>
 
-          <div class="form-group">
-            <label>Senha (deixe em branco para não alterar):</label>
-            <input type="password" name="senha" />
-          </div>
+            <div class="form-group">
+              <label>Senha (deixe em branco para não alterar):</label>
+              <input type="password" class="form-control" name="senha">
+            </div>
 
-          <h3>Emails</h3>
-          <div id="emailsContainer">
-            <% emails.forEach((email, index)=> { %>
-              <div class="form-inline">
-                <input type="email" name="emails[<%= index %>].email" value="<%= email.email %>" required />
-                <label>
-                  Principal:
-                  <input type="radio" name="emailPrincipal" value="<%= index %>" <%=email.principal ? "checked" : "" %>
-                  />
-                </label>
-                <button type="button" onclick="removeEmail(this)">Remover</button>
-              </div>
-              <% }) %>
-          </div>
-          <button type="button" onclick="addEmail()">+ Adicionar Email</button>
+            <h3 class="mt-4">Emails</h3>
+            <div id="emailsContainer">
+              <% emails.forEach((email, index)=> { %>
+                <div class="form-group mb-3">
+                  <div class="d-flex align-items-center">
+                    <input type="email" class="form-control" name="emails[<%= index %>].email"
+                      value="<%= email.email %>" required>
+                    <div class="form-check ms-3">
+                      <input class="form-check-input" type="radio" name="emailPrincipal" value="<%= index %>"
+                        <%=email.principal ? "checked" : "" %>>
+                      <label class="form-check-label">Principal</label>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger ms-2"
+                      onclick="removeEmail(this)">Remover</button>
+                  </div>
+                </div>
+                <% }) %>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addEmail()">+ Adicionar Email</button>
 
-          <h3>Telefones</h3>
-          <div id="telefonesContainer">
-            <% telefones.forEach((tel, index)=> { %>
-              <div class="form-inline">
-                <input type="text" name="telefones[<%= index %>].telefone" value="<%= tel.telefone %>" required />
-                <label>
-                  Principal:
-                  <input type="radio" name="telefonePrincipal" value="<%= index %>" <%=tel.principal ? "checked" : "" %>
-                  />
-                </label>
-                <button type="button" onclick="removeTelefone(this)">Remover</button>
-              </div>
-              <% }) %>
-          </div>
-          <button type="button" onclick="addTelefone()">+ Adicionar Telefone</button>
+            <h3 class="mt-4">Telefones</h3>
+            <div id="telefonesContainer">
+              <% telefones.forEach((tel, index)=> { %>
+                <div class="form-group mb-3">
+                  <div class="d-flex align-items-center">
+                    <input type="text" class="form-control" name="telefones[<%= index %>].telefone"
+                      value="<%= tel.telefone %>" required>
+                    <div class="form-check ms-3">
+                      <input class="form-check-input" type="radio" name="telefonePrincipal" value="<%= index %>"
+                        <%=tel.principal ? "checked" : "" %>>
+                      <label class="form-check-label">Principal</label>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger ms-2"
+                      onclick="removeTelefone(this)">Remover</button>
+                  </div>
+                </div>
+                <% }) %>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addTelefone()">+ Adicionar
+              Telefone</button>
 
-          <br /><br />
-          <button type="submit">Salvar Alterações</button>
-          <a href="/users" class="btn-voltar">Voltar</a>
-        </form>
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+              <a href="/users" class="btn btn-secondary">Voltar</a>
+            </div>
+          </form>
+    </div>
   </div>
 
   <script src="/js/form-dinamico.js"></script>
 
-  <%- include("partials/footer") %>
+  <%- include('partials/footer') %>

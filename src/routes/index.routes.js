@@ -14,7 +14,10 @@ router.get("/logout", authController.logout);
 
 // Página inicial
 router.get("/home", verificarLogin, (req, res) => {
-  res.render("home", { usuario: req.session.usuario });
+  res.render("home", { 
+    usuario: req.session.usuario,
+    session: req.session,   
+  });
 });
 
 // Cadastro de usuário

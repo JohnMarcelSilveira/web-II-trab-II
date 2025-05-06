@@ -1,76 +1,69 @@
 <%- include('partials/header', { titulo: 'Cadastrar Usuário' }) %>
 
   <div class="container">
-    <h1>Cadastrar Usuário</h1>
-    <form method="POST" action="/addUser">
-      <label for="nome">Nome:</label>
-      <input type="text" name="nome" required><br>
+    <div class="card">
+      <h1 class="mb-4">Cadastrar Usuário</h1>
 
-      <label for="cpf">CPF:</label>
-      <input type="text" name="cpf" required><br>
-
-      <label for="senha">Senha:</label>
-      <input type="password" name="senha" required><br>
-
-      <label for="perfil">Perfil:</label>
-      <select name="perfil" required>
-        <option value="ADMIN">ADMIN</option>
-        <option value="CLIENTE">CLIENTE</option>
-      </select><br>
-
-      <!-- E-mails -->
-      <h3>E-mails</h3>
-      <div id="emails">
-        <div class="email-group">
-          <input type="email" name="emails[0][email]" placeholder="E-mail" required>
-          <label for="principalEmail">Principal:</label>
-          <input type="radio" name="emails[0][principal]" value="1">
+      <form method="POST" action="/addUser">
+        <div class="form-group">
+          <label for="nome" class="form-label">Nome:</label>
+          <input type="text" class="form-control" name="nome" required>
         </div>
-      </div>
-      <button type="button" onclick="addEmail()">Adicionar E-mail</button><br>
 
-      <!-- Telefones -->
-      <h3>Telefones</h3>
-      <div id="telefones">
-        <div class="telefone-group">
-          <input type="tel" name="telefones[0][telefone]" placeholder="Telefone" required>
-          <label for="principalTelefone">Principal:</label>
-          <input type="radio" name="telefones[0][principal]" value="1">
+        <div class="form-group">
+          <label for="cpf" class="form-label">CPF:</label>
+          <input type="text" class="form-control" name="cpf" required>
         </div>
-      </div>
-      <button type="button" onclick="addTelefone()">Adicionar Telefone</button><br>
 
-      <button type="submit">Cadastrar</button>
-    </form>
+        <div class="form-group">
+          <label for="senha" class="form-label">Senha:</label>
+          <input type="password" class="form-control" name="senha" required>
+        </div>
+
+        <div class="form-group">
+          <label for="perfil" class="form-label">Perfil:</label>
+          <select class="form-control" name="perfil" required>
+            <option value="">Selecione...</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="CLIENTE">CLIENTE</option>
+          </select>
+        </div>
+
+        <h3 class="mt-4">E-mails</h3>
+        <div id="emails">
+          <div class="input-group">
+            <input type="email" class="form-control" name="emails[0][email]" placeholder="exemplo@email.com" required>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="emails[0][principal]" value="1" id="principalEmail0">
+              <label class="form-check-label" for="principalEmail0">Principal</label>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline-primary mt-2" onclick="addEmail()">
+          + Adicionar E-mail
+        </button>
+
+        <h3 class="mt-4">Telefones</h3>
+        <div id="telefones">
+          <div class="input-group">
+            <input type="tel" class="form-control" name="telefones[0][telefone]" placeholder="(00) 00000-0000" required>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="telefones[0][principal]" value="1" id="principalTel0">
+              <label class="form-check-label" for="principalTel0">Principal</label>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline-primary mt-2" onclick="addTelefone()">
+          + Adicionar Telefone
+        </button>
+
+        <div class="form-group mt-4">
+          <button type="submit" class="btn btn-primary mr-2">Cadastrar</button>
+          <a href="/home" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
   </div>
+  <script src="/js/form-addUser.js"></script>
 
-    <script>
-      let emailCount = 1;
-      let telefoneCount = 1;
-
-      function addEmail() {
-        const emailDiv = document.createElement('div');
-        emailDiv.classList.add('email-group');
-        emailDiv.innerHTML = `
-          <input type="email" name="emails[${emailCount}][email]" placeholder="E-mail" required>
-          <label for="principalEmail">Principal:</label>
-          <input type="radio" name="emails[${emailCount}][principal]" value="1">
-        `;
-        document.getElementById('emails').appendChild(emailDiv);
-        emailCount++;
-      }
-
-      function addTelefone() {
-        const telefoneDiv = document.createElement('div');
-        telefoneDiv.classList.add('telefone-group');
-        telefoneDiv.innerHTML = `
-          <input type="tel" name="telefones[${telefoneCount}][telefone]" placeholder="Telefone" required>
-          <label for="principalTelefone">Principal:</label>
-          <input type="radio" name="telefones[${telefoneCount}][principal]" value="1">
-        `;
-        document.getElementById('telefones').appendChild(telefoneDiv);
-        telefoneCount++;
-      }
-    </script>
-
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>
