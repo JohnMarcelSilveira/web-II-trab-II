@@ -21,11 +21,12 @@ const authController = {
       }
 
       // Se as credenciais estiverem corretas, cria a sessão do usuário
-      req.session.usuario = {
-        id: usuario.id,
-        nome: usuario.nome,
-        perfil: usuario.perfil,
-      };
+     req.session.user = {
+       id: usuario.id,
+       nome: usuario.nome,
+       perfil: usuario.perfil,
+     };
+
 
       // Redireciona para a página inicial (home)
       res.redirect("/home");
