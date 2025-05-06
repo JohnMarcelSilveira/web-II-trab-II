@@ -59,15 +59,19 @@ const usersController = {
   create: (req, res) => {
     const { nome, cpf, senha, perfil } = req.body;
 
-    const emails = req.body.emails.map((email, index) => ({
-      email: email.email,
-      principal: req.body.emailPrincipal == index ? "1" : "0", // Marca o principal
-    }));
+    const emails = Array.isArray(req.body.emails)
+      ? req.body.emails.map((email) => ({
+          email: email.email || email,
+          principal: email.principal || "0", // Mantém o principal que veio no objeto
+        }))
+      : [];
 
-    const telefones = req.body.telefones.map((telefone, index) => ({
-      telefone: telefone.telefone,
-      principal: req.body.telefonePrincipal == index ? "1" : "0", // Marca o principal
-    }));
+    const telefones = Array.isArray(req.body.telefones)
+      ? req.body.telefones.map((telefone) => ({
+          telefone: telefone.telefone || telefone,
+          principal: telefone.principal || "0" // Mantém o principal que veio no objeto
+        }))
+      : [];
 
     // Validação
     const emailPrincipal = emails.find((email) => email.principal === "1");
@@ -157,9 +161,9 @@ const usersController = {
 
     // Processa os telefones
     const telefones = Array.isArray(req.body.telefones)
-      ? req.body.telefones.map((telefone, index) => ({
-          telefone: telefone.telefone || telefone, // Suporte para strings ou objetos
-          principal: req.body.telefonePrincipal == index ? "1" : "0",
+      ? req.body.telefones.map((telefone) => ({
+          telefone: telefone.telefone || telefone,
+          principal: telefone.principal || "0" // Mantém o principal que veio no objeto
         }))
       : [];
 

@@ -2,6 +2,10 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const { hashSync } = require("bcrypt");
 
+/**
+ * Modelo de Usuários.
+ * Contém funções para manipulação de dados no banco de dados.
+ */
 const usersDao = {
   findByCPF(cpf, callback) {
     db.prepare("SELECT * FROM usuarios WHERE cpf = ?").get(cpf, callback);
@@ -53,6 +57,11 @@ const usersDao = {
     });
   },
 
+  /**
+   * Busca um usuário pelo ID.
+   * @param {number} id - ID do usuário.
+   * @param {Function} callback - Função de callback para retornar o resultado.
+   */
   findById(id, callback) {
     const usuarioSQL = `SELECT * FROM usuarios WHERE id = ?`;
     const emailsSQL = `SELECT * FROM emails WHERE usuario_id = ?`;
@@ -78,7 +87,13 @@ const usersDao = {
     });
   },
 
-  updateUser: (id, { nome, senha, emails, telefones }, callback) => {
+  /**
+   * Atualiza os dados de um usuário.
+   * @param {number} id - ID do usuário.
+   * @param {Object} data - Dados do usuário (nome, senha, emails, telefones).
+   * @param {Function} callback - Função de callback para retornar o resultado.
+   */
+  updateUser(id, { nome, senha, emails, telefones }, callback) {
     const sqlUpdateUser = senha
       ? `UPDATE usuarios SET nome = ?, senha = ? WHERE id = ?`
       : `UPDATE usuarios SET nome = ? WHERE id = ?`;
