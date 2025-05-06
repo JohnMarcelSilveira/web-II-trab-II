@@ -44,17 +44,18 @@ projeto/
 │   │   └── db.js               # Conexão com banco de dados
 │
 │   ├── controllers/
-│   │   ├── authController.js   # Login / Logout
-│   │   └── userController.js   # CRUD de usuários
+│   │   ├── auth.controller.js  # Login / Logout
+│   │   └── user.controller.js  # CRUD de usuários
 │
 │   ├── models/
-│   │   └── userModel.js        # Funções SQL
+│   │   └── user.model.js       # Funções SQL
 │
 │   ├── routes/
-│   │   └── index.js            # Rotas da aplicação
+│   │   └── index.routes.js     # Rotas da aplicação
 │
 │   ├── middlewares/
-│   │   └── authMiddleware.js   # Verificação de login/permissão
+│   │   ├── authMiddleware.js   # Verificação de login/permissão
+│   │   └── setUsuario.js       # Disponibiliza o usuário logado nas views
 │
 │   └── views/
 │       ├── partials/           # Cabeçalho/Rodapé
@@ -73,8 +74,8 @@ projeto/
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+git clone https://github.com/JohnMarcelSilveira/web-II-trab-II
+cd web-II-trab-II
 ```
 
 ### 2. Instale as dependências
@@ -83,7 +84,11 @@ cd seu-repositorio
 npm install
 ```
 
-### 3. Execute o servidor
+### 3. Configure o banco de dados
+
+Certifique-se de que o arquivo `dados.db` está na raiz do projeto ou crie um novo banco de dados SQLite com as tabelas necessárias. A estrutura do banco de dados esta na pasta migrations.
+
+### 4. Execute o servidor
 
 ```bash
 node server.js
@@ -106,7 +111,7 @@ Acesse em: [http://localhost:3000](http://localhost:3000)
 
 ## 👥 Autores
 
-- Jaime 
+- Jaime Guimarães
 - John Silveira
 
 ---
