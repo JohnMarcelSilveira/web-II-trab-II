@@ -27,22 +27,27 @@ const usersController = {
   },
 
   getById: (req, res) => {
-    const { id } = req.params;
-    const isEdit = req.path.includes("updateUser"); // detecta se é a rota de edição
-
+    const id = req.params.id;
+    
+    // Verifica qual rota foi acessada
+    const isUpdateRoute = req.path.includes('updateUser');
+    const viewTemplate = isUpdateRoute ? 'updateUser' : 'userDetails';
+    
     usersDAO.findById(id, (err, usuario) => {
-      if (err || !usuario)
-        return res.status(404).json({ erro: "Usuário não encontrado." });
-
-      const viewName = isEdit ? "updateUser" : "userDetails";
-
-      res.render(viewName, {
-        user: usuario,
-        emails: usuario.emails || [],
+      if (err) {
+        return res.status(500).send("Erro ao buscar usuário.");
+      }
+      
+      if (!usuario) {
+        return res.status(404).send("Usuário não encontrado.");
+      }
+      
+      res.render(viewTemplate, { 
+        user: usuario, 
+        emails: usuario.emails || [], 
         telefones: usuario.telefones || [],
-        session: req.session || {},
-        usuario: req.session.user || null,
         erro: null,
+        session: req.session
       });
     });
   },
@@ -63,19 +68,21 @@ const usersController = {
     const emailPrincipalIndex = req.body.emailPrincipal;
     const telefonePrincipalIndex = req.body.telefonePrincipal;
 
+    // Processa os e-mails
     const emails = Array.isArray(req.body.emails)
-    ? req.body.emails.map((email, index) => ({
-        email: email.email,
-        principal: index.toString() === emailPrincipalIndex ? "1" : "0",
-      }))
-    : [];
+      ? req.body.emails.map((email, index) => ({
+          email: email.email || email, // Suporte para strings ou objetos
+          principal: req.body.emailPrincipal == index ? "1" : "0", // Define o principal pelo índice
+        }))
+      : [];
 
-  const telefones = Array.isArray(req.body.telefones)
-    ? req.body.telefones.map((telefone, index) => ({
-        telefone: telefone.telefone,
-        principal: index.toString() === telefonePrincipalIndex ? "1" : "0",
-      }))
-    : [];
+    // Processa os telefones - usando a mesma abordagem que os e-mails
+    const telefones = Array.isArray(req.body.telefones)
+      ? req.body.telefones.map((telefone, index) => ({
+          telefone: telefone.telefone || telefone, // Suporte para strings ou objetos
+          principal: req.body.telefonePrincipal == index ? "1" : "0", // Define o principal pelo índice
+        }))
+      : [];
 
     // Validação
     const emailPrincipal = emails.find((email) => email.principal === "1");
@@ -160,15 +167,15 @@ const usersController = {
     const emails = Array.isArray(req.body.emails)
       ? req.body.emails.map((email, index) => ({
           email: email.email || email, // Suporte para strings ou objetos
-          principal: req.body.emailPrincipal == index ? "1" : "0",
+          principal: req.body.emailPrincipal == index ? "1" : "0", // Define o principal pelo índice
         }))
       : [];
 
-    // Processa os telefones
+    // Processa os telefones - usando a mesma abordagem que os e-mails
     const telefones = Array.isArray(req.body.telefones)
-      ? req.body.telefones.map((telefone) => ({
-          telefone: telefone.telefone || telefone,
-          principal: telefone.principal || "0" // Mantém o principal que veio no objeto
+      ? req.body.telefones.map((telefone, index) => ({
+          telefone: telefone.telefone || telefone, // Suporte para strings ou objetos
+          principal: req.body.telefonePrincipal == index ? "1" : "0", // Define o principal pelo índice
         }))
       : [];
 
@@ -193,7 +200,7 @@ const usersController = {
         if (err) {
           return res.status(500).json({ erro: "Erro ao atualizar o usuário." });
         }
-        res.json({ mensagem: "Usuário atualizado com sucesso!" });
+        res.redirect("/user/" + idParaEditar);
       }
     );
   },

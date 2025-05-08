@@ -27,7 +27,7 @@ router.get("/addUser", (req, res) => {
 });
 router.post("/addUser", userController.create);
 router.get("/users", verificarLogin, userController.getAll);
-router.get("/viewUser/:id", userController.getById);
+router.get("/user/:id", verificarLogin, userController.getById);
 router.get("/updateUser/:id", verificarAdmin, userController.getById);
 router.post("/updateUser/:id",verificarAdmin, userController.update);
 router.get("/deleteUser/:id",verificarAdmin, userController.delete);
