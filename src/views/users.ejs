@@ -19,25 +19,29 @@
           </tr>
         </thead>
         <tbody>
-          <% users.forEach(user=> { %>
+          <% users.forEach(user => { %>
             <tr>
-              <td>
-                <%= user.nome %>
-              </td>
-              <td>
-                <%= user.cpf %>
-              </td>
-              <td>
-                <%= user.perfil %>
-              </td>
+              <td><%= user.nome %></td>
+              <td><%= user.cpf %></td>
+              <td><%= user.perfil %></td>
               <td class="actions">
-                <a href="/updateUser/<%= user.id %>" class="btn btn-edit">Editar</a>
-                <% if (session && session.user && session.user.perfil==='ADMIN' && user.perfil !=='ADMIN' ) { %>
-                  <a href="/deleteUser/<%= user.id %>" class="btn btn-delete">Excluir</a>
-                  <% } %>
+                <!-- Link para visualizar detalhes do usuário -->
+                <a href="/viewUser/<%= user.id %>" class="btn btn-primary">Visualizar</a>
+                
+                <!-- Link para editar o usuário (se o usuário logado for ADMIN ou for o próprio usuário) -->
+                <% if (session && session.user && (session.user.perfil === 'ADMIN' || session.user.id === user.id)) { %>
+                  <a href="/updateUser/<%= user.id %>" class="btn btn-edit">Editar</a>
+                <% } %>
+                
+                <!-- Botão de exclusão (apenas para ADMIN e não pode excluir outros ADMINs) -->
+                <% if (session && session.user && session.user.perfil === 'ADMIN' && 
+                    (user.perfil !== 'ADMIN' || session.user.id === user.id)) { %>
+                  <a href="/deleteUser/<%= user.id %>" class="btn btn-delete"
+                     onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</a>
+                <% } %>
               </td>
             </tr>
-            <% }) %>
+          <% }) %>
         </tbody>
       </table>
     </div>
